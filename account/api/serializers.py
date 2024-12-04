@@ -24,6 +24,9 @@ class LoginSerializer(serializers.Serializer):
         user = User.objects.get(email=email)
         return user
     
+class ForgetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    
 class UserSerializer(serializers.ModelSerializer):
     podcast_favorite = serializers.SerializerMethodField()
     podcast_save = serializers.SerializerMethodField()

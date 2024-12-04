@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+
+from account.api.extentions import send_otp_via_email
 from .serializers import *
 from account.models import *
 from rest_framework import status
@@ -92,6 +94,19 @@ class LogoinApiView(APIView):
                     'password_error': 'password is wrong'
                 }, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors , status=status.HTTP_200_OK)
+    
+class ForgetpasswordApiview(APIView):
+    serializers_class = ForgetPasswordSerializer
+    parser_classes = [MultiPartParser]
+    def post(self , request):
+        data = request.data
+        seri = ForgetPasswordSerializer(data=data)
+        if seri.is_valid():
+            email = seri.data['email']
+            user = User.objects.get(email=email)
+            send_otp_via_email(email)
+            return Response({'data':user.password} , status=status.HTTP_200_OK)
+        return Response(seri.errors , status=status.HTTP_200_OK)
 
 class UserProfileApiView(APIView):
     serializers_name = UserSerializer
