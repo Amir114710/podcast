@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import MultiPartParser
 from .phone import send_otp_via_phone
+import time
 
 # class RegisterApiView(APIView):
 #     serializer_class = RegisterSerializer
@@ -103,8 +104,8 @@ class ForgetpasswordApiview(APIView):
         seri = ForgetPasswordSerializer(data=data)
         if seri.is_valid():
             email = seri.data['email']
-            user = User.objects.get(email=email)
             send_otp_via_email(email)
+            user = User.objects.get(email=email)
             return Response({'data':user.password} , status=status.HTTP_200_OK)
         return Response(seri.errors , status=status.HTTP_200_OK)
 
