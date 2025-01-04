@@ -108,7 +108,7 @@ class PlayList(models.Model):
     title = models.CharField(max_length=350 , null=True ,  verbose_name='نام پلی لیست')
     cover = models.ImageField(upload_to='playlists/cover/' , verbose_name='کاور پلی لیست')
     singer = models.ForeignKey(Singer , on_delete=models.CASCADE , related_name='playlists' , verbose_name='گوینده')
-    podcast = models.ManyToManyField(Podcast , related_name='playlists' , verbose_name='پادکست ها' , null=True , blank=True)
+    podcast = models.ManyToManyField(Podcast , related_name='playlists' , verbose_name='پادکست ها' , blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

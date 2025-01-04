@@ -12,6 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=11)
     password_copy = models.TextField(null=True , blank=True)
     image = models.FileField(upload_to='user/image/' , null=True , blank=True , verbose_name='تصویر پروفایل')
+    coin = models.IntegerField(default=0 , null=True , blank=True , verbose_name='سکه')
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)

@@ -1,4 +1,5 @@
 from django.db import models
+from podcast.models import Podcast
 
 # class User(AbstractUser):
 #     Choices1=(
@@ -46,14 +47,16 @@ class MainQuestion(models.Model):
     option2 = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs2' , verbose_name='گزینه 2')
     option3 = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs3' , verbose_name='گزینه 3')
     option4 = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs4' , verbose_name='گزینه 4')
-    correct_option = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs_correct' , verbose_name='گزینه درست')
-    correct_count = models.IntegerField(null=True , blank=True , verbose_name='تعداد درست')
+    podcast = models.ForeignKey(Podcast , on_delete=models.CASCADE , null=True , blank=True , related_name='mainqs' , verbose_name='پادکست')
+    user_correct_option_id = models.CharField(max_length=100 , null=True , blank=True , verbose_name='ایدی جواب که کاربر انتخاب کرده است')
+    correct_option = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='correct_option' , blank=True , null=True , verbose_name='جواب صیحیح')
+    correct_count = models.IntegerField(default=0 , verbose_name='تعداد درست')
     uncorrect_count = models.IntegerField(null=True , blank=True , verbose_name='تعداد نادرست')
     null_count = models.IntegerField(null=True , blank=True , verbose_name='تعداد بدون جواب')
     created = models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.question
+        return self.question.qs
     
     class Meta:
         ordering = ('-created',)
