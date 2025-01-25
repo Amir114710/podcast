@@ -17,6 +17,25 @@ from podcast.models import Podcast
 #     number = models.IntegerField(default=58)
 #     image = models.ImageField(null=True, help_text="", upload_to='UserProfile')   
 
+class Hint(models.Model):
+    Choices1=(
+         ('بالا' ,'بالا'),
+         ('متوسط', 'متوسط'),
+         (' پایین', ' پایین')
+    )
+    data  = models.TextField(null=True , blank=True , verbose_name='متن راهنمایی')
+    level = models.CharField(max_length=250 , null=True , blank=True , choices=Choices1 , verbose_name='سطح راهنمایی')
+    coin = models.IntegerField(default=0 , verbose_name='مقدار سکه مورد نیاز')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.data
+    
+    class Meta:
+        ordering = ('-created',)
+        verbose_name_plural = 'راهنمایی ها'
+        verbose_name = 'راهنمایی'
+
 class Question(models.Model):
     qs = models.TextField(null=True , blank=True , verbose_name='سوال')
     created = models.DateField(auto_now_add=True)
@@ -48,6 +67,7 @@ class MainQuestion(models.Model):
     option3 = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs3' , verbose_name='گزینه 3')
     option4 = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='mainqs4' , verbose_name='گزینه 4')
     podcast = models.ForeignKey(Podcast , on_delete=models.CASCADE , null=True , blank=True , related_name='mainqs' , verbose_name='پادکست')
+    hints = models.ManyToManyField(Hint , related_name='hint_podcast' , verbose_name='راهنمایی ها')
     user_correct_option_id = models.CharField(max_length=100 , null=True , blank=True , verbose_name='ایدی جواب که کاربر انتخاب کرده است')
     correct_option = models.ForeignKey(Options , on_delete=models.CASCADE , related_name='correct_option' , blank=True , null=True , verbose_name='جواب صیحیح')
     correct_count = models.IntegerField(default=0 , verbose_name='تعداد درست')

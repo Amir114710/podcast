@@ -46,8 +46,10 @@ def send_otp_via_email(email):
         print(user.password_copy)
         try:
             send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+            print('send')
             context['result'] = 'Email sent successfully'
         except Exception as e:
+            print('error')
             context['result'] = f'Error sending email: {e}'
     else:
         context['result'] = 'All fields are required'
