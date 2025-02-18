@@ -12,3 +12,7 @@ class QSAnswerSerializer(serializers.Serializer):
 class CoinSerializer(serializers.Serializer):
     time = serializers.IntegerField()
     
+class HintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hint
+        fields = ('__all__')

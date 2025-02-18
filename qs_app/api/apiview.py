@@ -60,3 +60,20 @@ class PodcastMainQs(APIView):
         serializer = QSSerializer(podcast_qs , many=True)
         return Response(serializer.data , status=status.HTTP_200_OK)
 
+class HintQuestionsView(APIView):
+    serializers_class = HintSerializer
+    parser_classes = [MultiPartParser]
+    def get(self , request , pk):
+        user = self.request.user
+        hint = get_object_or_404(Hint , id=pk)
+        user.coin -= hint.coin
+        return Response({'coin':user.coin} , status=status.HTTP_200_OK)
+    
+class QuestionHintList(APIView):
+    serializers_class = HintSerializer
+    parser_classes = [MultiPartParser]
+    def get(self , request , pk):
+        podcast_hint = get_object_or_404(MainQuestion , id=pk)
+        hints = podcast_hint.hints.all()
+        seri = HintSerializer(hints , many=True)
+        return Response(seri.data , status=status.HTTP_200_OK)
